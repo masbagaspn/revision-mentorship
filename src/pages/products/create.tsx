@@ -15,7 +15,6 @@ export default function CreateProduct() {
     title: '',
     description: '',
     price: 0,
-    image: '',
   });
 
   const router = useRouter();
@@ -31,19 +30,17 @@ export default function CreateProduct() {
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
     setIsLoading(true);
-
-    const data = { ...formData };
-    data.price = Number(data.price);
-
-    if (data.image === '') {
-      delete data.image;
-    }
 
     fetch('/api/product', {
       headers: { 'Content-Type': 'application/json' },
       method: 'POST',
-      body: JSON.stringify(data),
+      body: JSON.stringify({
+        title: formData.title,
+        description: formData.description,
+        price: Number(formData.price),
+      }),
     })
       .then((res) => {
         if (res.status === 201) {
@@ -88,12 +85,6 @@ export default function CreateProduct() {
             onChange={(e) => handleChange(e)}
             value={Number(formData.price)}
             required
-          />
-          <FieldTextInput
-            label='Product Image'
-            name='image'
-            onChange={(e) => handleChange(e)}
-            value={formData.image as string}
           />
           <Button
             type='submit'

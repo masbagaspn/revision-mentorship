@@ -11,7 +11,7 @@ interface ProductCardProps {
   product: Product;
 }
 
-const ProductCard: React.FC<ProductCardProps> = ({ product }): JSX.Element => {
+const ProductCard = ({ product }: ProductCardProps) => {
   const { id, title, description, image, price } = product;
   const [isActionOpen, setIsActionOpen] = React.useState(false);
 

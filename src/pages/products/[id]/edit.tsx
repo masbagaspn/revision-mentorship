@@ -11,11 +11,12 @@ import Spinner from '@/components/loader/Spinner';
 import ProductLayout from '@/components/products/layout/ProductLayout';
 
 export default function EditProduct() {
-  const { data, setData, isLoading } = useProductById();
   const [isSubmitting, setIsSubmitting] = React.useState(false);
   const [error, setError] = React.useState<string | undefined>();
 
   const router = useRouter();
+  const { id } = router.query;
+  const { data, setData, isLoading } = useProductById(id);
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -30,23 +31,14 @@ export default function EditProduct() {
     e.preventDefault();
     setIsSubmitting(true);
 
-    const formData = {
-      title: data?.title,
-      description: data?.description,
-      price: data?.price,
-      image: data?.image,
-    };
-
-    formData.price = Number(formData.price);
-
-    if (formData.image === '' || formData.image === null) {
-      delete formData.image;
-    }
-
     fetch(`/api/product/${data?.id}`, {
       headers: { 'Content-Type': 'application/json' },
       method: 'PATCH',
-      body: JSON.stringify(formData),
+      body: JSON.stringify({
+        title: data?.title,
+        description: data?.description,
+        price: Number(data?.price),
+      }),
     })
       .then((res) => {
         if (res.status === 200) {
@@ -93,12 +85,6 @@ export default function EditProduct() {
                 onChange={(e) => handleChange(e)}
                 value={Number(data.price)}
                 required
-              />
-              <FieldTextInput
-                label='Product Image'
-                name='image'
-                onChange={(e) => handleChange(e)}
-                value={data.image ? data.image : ''}
               />
               {error && (
                 <span className='rounded-lg bg-red-50 px-4 py-2 text-sm text-red-500'>

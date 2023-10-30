@@ -11,9 +11,9 @@ import Spinner from '@/components/loader/Spinner';
 import ProductLayout from '@/components/products/layout/ProductLayout';
 
 export default function ProductDetails() {
-  const { data, isLoading } = useProductById();
-
   const router = useRouter();
+  const { id } = router.query;
+  const { data, isLoading } = useProductById(id);
 
   const handleDelete = async (id: number | undefined) => {
     fetch(`/api/product/${id}`, { method: 'DELETE' }).then((res) => {
