@@ -1,6 +1,7 @@
 import { Product } from '@prisma/client';
 import { MoreHorizontal } from 'lucide-react';
 import Image from 'next/image';
+import { useRouter } from 'next/router';
 import React from 'react';
 
 import IconButton from '@/components/buttons/IconButton';
@@ -51,6 +52,15 @@ const Options = ({
   setIsOpen: (arg: boolean) => void;
   id: number;
 }) => {
+  const router = useRouter();
+
+  const handleDelete = async (id: number | string) => {
+    fetch(`/api/product/${id}`, { method: 'DELETE' }).then((res) => {
+      if (res.status === 202) {
+        router.reload();
+      }
+    });
+  };
   return (
     <div
       onMouseLeave={() => setIsOpen(false)}
@@ -68,12 +78,12 @@ const Options = ({
       >
         Edit
       </UnstyledLink>
-      <UnstyledLink
-        href={`/products/${id}/delete`}
-        className='hover:bg-primary-50 px-3 py-2'
+      <button
+        onClick={() => handleDelete(id)}
+        className='hover:bg-primary-50 px-3 py-2 text-left'
       >
         Delete
-      </UnstyledLink>
+      </button>
     </div>
   );
 };

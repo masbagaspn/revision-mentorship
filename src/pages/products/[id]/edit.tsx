@@ -1,14 +1,14 @@
 import { useRouter } from 'next/router';
 import React from 'react';
 
+import { useProductById } from '@/hooks/products/useProductById';
+
 import Button from '@/components/buttons/Button';
 import FieldNumberInput from '@/components/forms/FieldNumberInput';
 import FieldTextArea from '@/components/forms/FieldTextArea';
 import FieldTextInput from '@/components/forms/FieldTextInput';
 import Spinner from '@/components/loader/Spinner';
 import ProductLayout from '@/components/products/layout/ProductLayout';
-
-import { useProductById } from '@/services/products';
 
 export default function EditProduct() {
   const { data, setData, isLoading } = useProductById();

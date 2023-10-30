@@ -1,15 +1,27 @@
 import { Pencil, Trash2 } from 'lucide-react';
 import Image from 'next/image';
+import { useRouter } from 'next/router';
 import React from 'react';
 
+import { useProductById } from '@/hooks/products/useProductById';
+
+import IconButton from '@/components/buttons/IconButton';
 import IconLink from '@/components/links/IconLink';
 import Spinner from '@/components/loader/Spinner';
 import ProductLayout from '@/components/products/layout/ProductLayout';
 
-import { useProductById } from '@/services/products';
-
 export default function ProductDetails() {
   const { data, isLoading } = useProductById();
+
+  const router = useRouter();
+
+  const handleDelete = async (id: number | undefined) => {
+    fetch(`/api/product/${id}`, { method: 'DELETE' }).then((res) => {
+      if (res.status === 202) {
+        router.push('/products');
+      }
+    });
+  };
 
   return (
     <ProductLayout>
@@ -37,8 +49,8 @@ export default function ProductDetails() {
                   icon={Pencil}
                   variant='ghost'
                 />
-                <IconLink
-                  href={`/products/${data?.id}/edit`}
+                <IconButton
+                  onClick={() => handleDelete(data?.id)}
                   icon={Trash2}
                   variant='ghost'
                 />

@@ -1,9 +1,9 @@
 import React from 'react';
 
+import { useProducts } from '@/hooks/products/useProducts';
+
 import Spinner from '@/components/loader/Spinner';
 import ProductCard from '@/components/products/cards/ProductCard';
-
-import { useProducts } from '@/services/products';
 
 const ProductList = () => {
   const { data, isLoading } = useProducts();
