@@ -1,16 +1,11 @@
-import { Product } from '@prisma/client';
-import * as React from 'react';
+import { useQuery } from '@tanstack/react-query';
+import axios from 'axios';
 
 export const useProducts = () => {
-  const [data, setData] = React.useState<Product[]>();
-  const [isLoading, setIsLoading] = React.useState(true);
+  const { isLoading, error, data } = useQuery({
+    queryKey: ['products'],
+    queryFn: () => axios.get('/api/product').then((res) => res.data.data),
+  });
 
-  React.useEffect(() => {
-    fetch('/api/product')
-      .then((res) => res.json())
-      .then((products) => setData(products.data))
-      .finally(() => setIsLoading(false));
-  }, []);
-
-  return { data, isLoading };
+  return { isLoading, error, data };
 };

@@ -1,3 +1,4 @@
+import { Product } from '@prisma/client';
 import React from 'react';
 
 import { useProducts } from '@/hooks/products/useProducts';
@@ -18,7 +19,7 @@ const ProductList = () => {
 
   return (
     <div className='grid grid-cols-3 gap-8'>
-      {data?.map((product) => (
+      {data?.map((product: Product) => (
         <ProductCard key={product.id} product={product} />
       ))}
     </div>
